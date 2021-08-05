@@ -1,8 +1,9 @@
 version: '3.8'
 
 networks:
-  postgres:
-    driver: bridge
+  default:
+    external:
+      name: forex
 
 services:
   postgres_db:
@@ -13,11 +14,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
       PGDATA: /data/postgres
     volumes: 
-      - postgres:/data/postgres
+      - ./postgres:/data/postgres
     ports: 
       - "5432:5432"
-    networks: 
-      - postgres
     restart: always
   
   pgadmin:  
@@ -27,11 +26,9 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@local}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
     volumes:
-       - pgadmin:/root/.pgadmin
+       - ./pgadmin:/root/.pgadmin
     ports:
       - "5433:80"
-    networks:
-      - postgres
     restart: always
 
 volumes:
